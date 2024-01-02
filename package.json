@@ -2,14 +2,20 @@
   "name": "quickvault",
   "version": "1.0.0",
   "description": "A fast and reliable key-value store CLI.",
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
+  "bin": "./bin/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc"
   },
   "author": "Rutuj Runwal",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.10.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "argparse": "^2.0.1"
   }
 }
