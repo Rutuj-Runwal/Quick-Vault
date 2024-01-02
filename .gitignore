@@ -3,3 +3,7 @@
 
 # Ignore dist
 /dist
+
+# configs
+package-lock.json
+tsconfig.json
