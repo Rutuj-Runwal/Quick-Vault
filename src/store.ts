@@ -20,6 +20,10 @@ class Store{
         this.vaultDB = parseVault(this.vaultFile);
     }
 
+    exists(key:string){
+        return this.vaultDB.hasOwnProperty(key);
+    }
+
     get(key:string){
         return this.vaultDB[key];
     }

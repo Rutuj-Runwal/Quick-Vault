@@ -50,8 +50,7 @@ try{
 
 
 function add([key,val]:[string,string]){
-    const prevVal = quikVault.get(key);
-    if(prevVal){
+    if(quikVault.exists(key)){
         console.log(`${key} already exists.`);
         console.log(`Use "get" command to retrieve from quikvault`);
     }else{
@@ -60,8 +59,8 @@ function add([key,val]:[string,string]){
 }
 
 function edit([key,val]:[string,string]){
-    const prevVal = quikVault.get(key);
-    if(prevVal){
+    if(quikVault.exists(key)){
+        const prevVal = quikVault.get(key);
         if(prevVal!==val){
             quikVault.set(key,val);
             console.log(`Key: ${key}`);
@@ -71,7 +70,7 @@ function edit([key,val]:[string,string]){
             console.warn("Exisitng value is same");
         }
     }else{
-        console.log(`Key: ${key} dosen't exisits.`);
+        console.log(`Key: ${key} dosen't exists.`);
         console.log(`Use "add" command to insert ${key} into quikvault`);
     }
 }
@@ -81,7 +80,7 @@ function get([key]:[string]){
     if(prevVal){
         console.log(prevVal);
     }else{
-        console.log(`Key: ${key} dosen't exisits.`);
+        console.log(`Key: ${key} dosen't exists.`);
         console.log(`Use "add" command to insert ${key} into quikvault`);
     }
 
