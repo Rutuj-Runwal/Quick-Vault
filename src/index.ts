@@ -1,12 +1,28 @@
 #!/usr/bin/env node
 import Store from './store.js';
-
+import argparse from './argsHandler.js';
 const QUIK_COMMANDS = ["add","edit","get","remove","dump","clear"];
 const QUIK_VAULT_PATH = "./";
 
 const quikVault = new Store(QUIK_VAULT_PATH);
+const parsedArgs = argparse.parseArgs();
 
-function add([key,val]:[string,string]){
+switch(parsedArgs?.operationType){
+    case argparse.OPERATION.ADD:
+        add(parsedArgs.data);
+        break;
+    case argparse.OPERATION.EDIT:
+        edit(parsedArgs.data);
+        break;
+    case argparse.OPERATION.GET:
+        get(parsedArgs.data);
+        break;
+    default:
+        console.error(parsedArgs?.operationType);
+        break;
+}
+
+function add([key,val]:string[]){
     if(quikVault.exists(key)){
         console.log(`${key} already exists.`);
         console.log(`Use "get" command to retrieve from quikvault`);
@@ -15,7 +31,7 @@ function add([key,val]:[string,string]){
     }
 }
 
-function edit([key,val]:[string,string]){
+function edit([key,val]:string[]){
     if(quikVault.exists(key)){
         const prevVal = quikVault.get(key);
         if(prevVal!==val){
@@ -32,7 +48,7 @@ function edit([key,val]:[string,string]){
     }
 }
 
-function get([key]:[string]){
+function get([key]:string[]){
     const prevVal = quikVault.get(key);
     if(prevVal){
         console.log(prevVal);
