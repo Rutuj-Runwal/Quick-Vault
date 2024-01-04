@@ -1,3 +1,6 @@
+import { createInterface } from "node:readline/promises";
+import { stdin, stdout } from "process";
+
 const STYLING = {
   reset: "\x1b[0m",
   //text color
@@ -26,17 +29,39 @@ function error(message: string) {
 }
 
 function welcome() {
-  console.log(STYLING.green + "Welcome to QuickVault! " + STYLING.reset);
-  console.log(STYLING.green + "Ⓒ Rutuj Runwal 2024-Present  " + STYLING.reset);
-  console.log(
-    STYLING.black +
-      "Commands: add,get,edit,delete,dump and clear  " +
-      STYLING.reset
+  success("Welcome to QuickVault!");
+  success("Ⓒ Rutuj Runwal 2024-Present  ");
+  info("Commands: add,get,edit,delete,dump and clear ");
+}
+
+function success(message: string) {
+  console.log(STYLING.green + "%s " + STYLING.reset, message);
+}
+
+function info(message: string) {
+  console.log(STYLING.blue + "%s " + STYLING.reset, message);
+}
+
+function warn(message: string) {
+  console.log(STYLING.yellow + "%s " + STYLING.reset, message);
+}
+
+function softError(message: string) {
+  console.error(STYLING.red + "%s " + STYLING.reset, message);
+}
+
+async function ask(message: string, handleAnswers?: string[]) {
+  const rl = createInterface({ input: stdin, output: stdout });
+  const answer = await rl.question(
+    STYLING.blue + " > " + STYLING.reset + message
   );
+  rl.close();
+
+  return answer;
 }
 
 function help() {
   console.log(STYLING.blue + "TODO: quickvault -h" + STYLING.reset);
 }
 
-export default { welcome, help, error };
+export default { welcome, ask, help, error, success, info, warn, softError };

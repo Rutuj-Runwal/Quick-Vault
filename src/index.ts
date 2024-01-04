@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import Store from "./store.js";
 import argparse from "./argsHandler.js";
+import msgHandler from "./msgHandler.js";
+
 const QUIK_COMMANDS = ["add", "edit", "get", "remove", "dump", "clear"];
 const QUIK_VAULT_PATH = "./";
 
@@ -16,6 +18,15 @@ switch (parsedArgs?.operationType) {
     break;
   case argparse.OPERATION.GET:
     get(parsedArgs.data);
+    break;
+  case argparse.OPERATION.DELETE:
+    remove(parsedArgs.data);
+    break;
+  case argparse.OPERATION.DUMP:
+    dump();
+    break;
+  case argparse.OPERATION.CLEAR:
+    clear();
     break;
   default:
     // TODO: Print help/docs
@@ -40,22 +51,52 @@ function edit([key, val]: string[]) {
       console.log(`Previous Value: ${prevVal}`);
       console.log(`Updated Value: ${val}`);
     } else {
-      console.warn("Exisitng value is same");
+      msgHandler.warn("Exisitng value is same");
     }
   } else {
-    console.log(`Key: ${key} dosen't exists.`);
-    console.log(`Use "add" command to insert ${key} into quikvault`);
+    msgHandler.info(`Key: ${key} dosen't exists.`);
+    msgHandler.info(`Use "add" command to insert ${key} into quikvault`);
   }
 }
 
 function get([key]: string[]) {
   const prevVal = quikVault.get(key);
   if (prevVal) {
-    console.log(prevVal);
+    msgHandler.success(prevVal);
   } else {
-    console.log(`Key: ${key} dosen't exists.`);
-    console.log(`Use "add" command to insert ${key} into quikvault`);
+    msgHandler.warn(`Key: ${key} dosen't exists.`);
+    msgHandler.info(`Use "add" command to insert ${key} into quikvault`);
   }
 }
 
+function remove([key]: string[]) {
+  if (quikVault.exists(key)) {
+    quikVault.del(key);
+    msgHandler.info(`${key} removed.`);
+  } else {
+    msgHandler.warn(`Unable to delete "${key}" - not found in quickvault`);
+  }
+}
+
+function dump() {
+  const vault = quikVault.dump();
+  console.log(vault);
+}
+
+async function clear() {
+  msgHandler.warn("`clear` will reset the quickvault");
+  const answer = await msgHandler.ask("Do you wish to continue (Y/N) ? ");
+
+  if (answer === "Y" || answer === "y") {
+    console.log();
+    msgHandler.info(" Quickvault reset successful.");
+    quikVault.clear();
+  } else if (answer === "N" || answer === "n") {
+    msgHandler.info("Reset cancelled.");
+  } else {
+    msgHandler.error(
+      `Invalid response, expected "Y" or "N". Received ${answer}`
+    );
+  }
+}
 // TODO: Add a `Did you mean?` spell check message

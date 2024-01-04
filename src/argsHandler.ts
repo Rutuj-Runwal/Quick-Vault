@@ -6,7 +6,7 @@ import msgHandler from "./msgHandler.js";
 // Types of operation in quickvault
 const OPERATION = {
   ADD: "add",
-  DELETE: "delete",
+  DELETE: "del",
   GET: "get",
   EDIT: "edit",
   DUMP: "dump",
@@ -19,9 +19,11 @@ function getOperation(args: Array<string>) {
   if (Object.values(OPERATION).includes(operation)) {
     return operation;
   } else {
-    console.warn(`Undefined operation for QuickVault: ${operation}`);
+    msgHandler.warn(`Undefined operation for QuickVault: ${operation}`);
     // TODO: Print help/docs
-    console.log("Possible commands: " + JSON.stringify(OPERATION));
+    msgHandler.info(
+      "Possible commands: " + JSON.stringify(Object.values(OPERATION))
+    );
   }
 }
 
@@ -36,7 +38,7 @@ function getData(args: Array<string>) {
       const val = args[args.length - 1];
       return { operationType, data: [key, val] };
     } else {
-      msgHandler.error(
+      msgHandler.softError(
         `Invalid arguments to ${operationType} command.Expected 2`
       );
     }
@@ -48,13 +50,19 @@ function getData(args: Array<string>) {
       const key = args[args.length - 1];
       return { operationType, data: [key] };
     } else {
-      msgHandler.error(
+      msgHandler.softError(
         `Invalid arguments to ${operationType} command.Expected 1`
       );
     }
   } else {
     // No args for OPERATION of type DUMP and CLEAR
-    return { operationType, data: [] };
+    if (args.length === 1) {
+      return { operationType, data: [] };
+    } else {
+      msgHandler.softError(
+        `Invalid arguments to ${operationType} command.Expected 0`
+      );
+    }
   }
 }
 
