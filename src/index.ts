@@ -3,11 +3,14 @@ import Store from "./store.js";
 import argparse from "./argsHandler.js";
 import msgHandler from "./msgHandler.js";
 import { existsSync, writeFileSync } from "fs";
+import configHandler from "./configHandler.js";
+import caesarCipher from "./cipher.js";
 
 const QUIK_COMMANDS = ["add", "edit", "get", "remove", "dump", "clear"];
 const QUIK_VAULT_PATH = "./";
 
-const quikVault = new Store(QUIK_VAULT_PATH);
+const quikVault = new Store(QUIK_VAULT_PATH,"vault.json");
+const configVault = new Store(QUIK_VAULT_PATH,"vault_config.json",{encrypt:0});
 const parsedArgs = argparse.parseArgs();
 
 switch (parsedArgs?.operationType) {
@@ -15,7 +18,7 @@ switch (parsedArgs?.operationType) {
     add(parsedArgs.data);
     break;
   case argparse.OPERATION.EDIT:
-    edit(parsedArgs.data);
+    edit(parsedArgs.data,quikVault);
     break;
   case argparse.OPERATION.GET:
     get(parsedArgs.data);
@@ -24,7 +27,7 @@ switch (parsedArgs?.operationType) {
     remove(parsedArgs.data);
     break;
   case argparse.OPERATION.DUMP:
-    dump();
+    dump(quikVault);
     break;
   case argparse.OPERATION.CLEAR:
     clear();
@@ -32,6 +35,18 @@ switch (parsedArgs?.operationType) {
   case argparse.OPERATION.ENV:
     generateEnv(parsedArgs.data);
     break;
+  case argparse.OPERATION.CONFIG:
+    if(parsedArgs.data[0]===undefined){
+      dump(configVault);
+    }else if(parsedArgs.data[0]==="encrypt"){
+      if(parsedArgs.data[1]==="1"||parsedArgs.data[1]==="0"){
+        edit(["encrypt",parsedArgs.data[1]],configVault);
+      }else{
+        msgHandler.warn(`Invalid value ${parsedArgs.data[1]}. Expected 0 or 1`)
+      }
+    }else{
+      msgHandler.info("Invalid Configuration parameter.Run `quickvault config` to view configuration options.");
+    }
   default:
     // TODO: Print help/docs
     break;
@@ -42,15 +57,25 @@ function add([key, val]: string[]) {
     console.log(`${key} already exists.`);
     console.log(`Use "get" command to retrieve from quikvault`);
   } else {
-    quikVault.set(key, val);
+    if(configHandler.checkConfig()){
+      msgHandler.info("Encryption is on");
+      msgHandler.info('Use `quickvault config encrypt 0` to disable encryption');
+      const encVal = caesarCipher(val,7);
+      quikVault.set(key, encVal);
+      // Update encryption state for the key
+      configHandler.addEncryptionState(key);
+    }else{
+      quikVault.set(key,val);
+    }
+    
   }
 }
 
-function edit([key, val]: string[]) {
-  if (quikVault.exists(key)) {
-    const prevVal = quikVault.get(key);
+function edit([key, val]: string[], vaultType:Store) {
+  if (vaultType.exists(key)) {
+    const prevVal = vaultType.get(key);
     if (prevVal !== val) {
-      quikVault.set(key, val);
+      vaultType.set(key, val);
       console.log(`Key: ${key}`);
       console.log(`Previous Value: ${prevVal}`);
       console.log(`Updated Value: ${val}`);
@@ -63,9 +88,26 @@ function edit([key, val]: string[]) {
   }
 }
 
-function get([key]: string[]) {
-  const prevVal = quikVault.get(key);
+async function get([key]: string[]) {
+  let prevVal = quikVault.get(key);
+  
   if (prevVal) {
+    if(configHandler.checkConfig()){
+      const answer = await msgHandler.ask(`Value for ${key} is encrypted. Are you sure you want to decrypt? (Y/N)`);
+      if (answer === "Y" || answer === "y") {
+        msgHandler.info("Actual Value:");
+        const decryptedVal = caesarCipher(prevVal,7,true);
+        prevVal = decryptedVal;
+      } else if (answer === "N" || answer === "n") {
+        msgHandler.info("Encrypted Value:");
+      } else {
+        msgHandler.error(
+          `Invalid response, expected "Y" or "N". Received ${answer}`
+        );
+        msgHandler.info("Encrypted Value:");
+      }
+      
+    }  
     msgHandler.success(prevVal);
   } else {
     msgHandler.warn(`Key: ${key} dosen't exists.`);
@@ -82,8 +124,8 @@ function remove([key]: string[]) {
   }
 }
 
-function dump() {
-  const vault = quikVault.dump();
+function dump(vaultType:Store) {
+  const vault = vaultType.dump();
   console.log(vault);
 }
 
@@ -130,4 +172,6 @@ function generateEnv([path]:string[]){
     msgHandler.softError(`Invalid path: ${path}`);
   }
 }
+
+export default configVault;
 // TODO: Add a `Did you mean?` spell check message

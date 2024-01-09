@@ -8,11 +8,11 @@ class Store {
   readonly vaultFile: string;
   vaultDB: JSON_OBJ;
 
-  constructor(vaultPath: string) {
-    this.vaultFile = vaultPath + "vault.json";
+  constructor(vaultPath: string,filename:string,defaults={}) {
+    this.vaultFile = vaultPath + filename;
     if (!existsSync(this.vaultFile)) {
       // Initialize a vault
-      writeFileSync(this.vaultFile, JSON.stringify({}));
+      writeFileSync(this.vaultFile, JSON.stringify(defaults));
       // TODO: Ascii cli - welcome
       console.log("Welcome to QuikVault!");
     }

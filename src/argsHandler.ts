@@ -2,6 +2,7 @@
 // quickvault -> add path usr/lib/
 // quickvault -> get path
 import msgHandler from "./msgHandler.js";
+import Store from "./store.js";
 
 // Types of operation in quickvault
 const OPERATION = {
@@ -11,7 +12,8 @@ const OPERATION = {
   EDIT: "edit",
   DUMP: "dump",
   CLEAR: "clear",
-  ENV:"env"
+  ENV:"env",
+  CONFIG:"config"
 };
 
 // Extract OPEARTION from cmd args
@@ -28,13 +30,16 @@ function getOperation(args: Array<string>) {
   }
 }
 
+// Handle config flags
+
+
 // Extract data from cmd args based on type of OPERATION
 function getData(args: Array<string>) {
   const operationType = getOperation(args);
   // TODO: handle invalid no of arguments passed
-  if (operationType === OPERATION.ADD || operationType === OPERATION.EDIT) {
+  if (args.length === 3) {
     // Needs two args: key -> val
-    if (args.length === 3) {
+    if (operationType === OPERATION.ADD || operationType === OPERATION.EDIT || operationType === OPERATION.CONFIG) {
       const key = args[args.length - 2];
       const val = args[args.length - 1];
       return { operationType, data: [key, val] };
@@ -43,11 +48,11 @@ function getData(args: Array<string>) {
         `Invalid arguments to ${operationType} command.Expected 2`
       );
     }
-  } else if (
-    operationType === OPERATION.GET ||
-    operationType === OPERATION.DELETE || operationType == OPERATION.ENV
-  ) {
-    if (args.length === 2) {
+  } else if (args.length === 2) {
+    if (
+      operationType === OPERATION.GET ||
+      operationType === OPERATION.DELETE || operationType == OPERATION.ENV
+    ) {
       const key = args[args.length - 1];
       return { operationType, data: [key] };
     } else {
@@ -56,7 +61,7 @@ function getData(args: Array<string>) {
       );
     }
   } else {
-    // No args for OPERATION of type DUMP and CLEAR
+    // No args for OPERATION of type DUMP and CLEAR [or CONFIG(for View)]
     if (args.length === 1) {
       return { operationType, data: [] };
     } else {
