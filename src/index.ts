@@ -2,6 +2,7 @@
 import Store from "./store.js";
 import argparse from "./argsHandler.js";
 import msgHandler from "./msgHandler.js";
+import { existsSync, writeFileSync } from "fs";
 
 const QUIK_COMMANDS = ["add", "edit", "get", "remove", "dump", "clear"];
 const QUIK_VAULT_PATH = "./";
@@ -27,6 +28,9 @@ switch (parsedArgs?.operationType) {
     break;
   case argparse.OPERATION.CLEAR:
     clear();
+    break;
+  case argparse.OPERATION.ENV:
+    generateEnv(parsedArgs.data);
     break;
   default:
     // TODO: Print help/docs
@@ -97,6 +101,33 @@ async function clear() {
     msgHandler.error(
       `Invalid response, expected "Y" or "N". Received ${answer}`
     );
+  }
+}
+
+function generateEnv([path]:string[]){
+  if(path==="." || path==="./"){
+    path = process.cwd();
+  }
+  if(existsSync(path)){
+    const FILE_NAME = "//.env";
+
+    // Generate ENV format:
+    let envFormat = "";
+    const vault = quikVault.dump();
+    for(let key in vault){
+      envFormat+= key + "=" + vault[key] + "\n";
+    }
+
+    // Save to path
+    try{
+      writeFileSync(path+FILE_NAME, envFormat);
+    }catch(e){
+      msgHandler.warn("Cannot save env");
+      msgHandler.softError(e as string);
+    }
+    
+  }else{
+    msgHandler.softError(`Invalid path: ${path}`);
   }
 }
 // TODO: Add a `Did you mean?` spell check message

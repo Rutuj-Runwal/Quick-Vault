@@ -11,6 +11,7 @@ const OPERATION = {
   EDIT: "edit",
   DUMP: "dump",
   CLEAR: "clear",
+  ENV:"env"
 };
 
 // Extract OPEARTION from cmd args
@@ -44,7 +45,7 @@ function getData(args: Array<string>) {
     }
   } else if (
     operationType === OPERATION.GET ||
-    operationType === OPERATION.DELETE
+    operationType === OPERATION.DELETE || operationType == OPERATION.ENV
   ) {
     if (args.length === 2) {
       const key = args[args.length - 1];
