@@ -74,7 +74,13 @@ function add([key, val]: string[]) {
 
 function edit([key, val]: string[], vaultType:Store) {
   if (vaultType.exists(key)) {
-    const prevVal = vaultType.get(key);
+    let prevVal = vaultType.get(key);
+    if(configHandler.checkEncryptionState(key)){
+      msgHandler.info(`${key} has encryption`);
+      msgHandler.info("Decrypting value...");
+      prevVal = caesarCipher(prevVal as string,7,true);
+      val = caesarCipher(val,7);
+    }
     if (prevVal !== val) {
       vaultType.set(key, val);
       console.log(`Key: ${key}`);
@@ -93,7 +99,7 @@ async function get([key]: string[]) {
   let prevVal = quikVault.get(key);
   
   if (prevVal) {
-    if(configHandler.checkConfig()){
+    if(configHandler.checkEncryptionState(key)){
       const answer = await msgHandler.ask(`Value for ${key} is encrypted. Are you sure you want to decrypt? (Y/N) `);
       if (answer === "Y" || answer === "y") {
         msgHandler.info("Actual Value:");
@@ -102,9 +108,7 @@ async function get([key]: string[]) {
       } else if (answer === "N" || answer === "n") {
         msgHandler.info("Encrypted Value:");
       } else {
-        msgHandler.error(
-          `Invalid response, expected "Y" or "N". Received ${answer}`
-        );
+        msgHandler.error(`Invalid response, expected "Y" or "N". Received ${answer}`);
         msgHandler.info("Encrypted Value:");
       }
       
