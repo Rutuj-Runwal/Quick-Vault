@@ -62,6 +62,7 @@ function add([key, val]: string[]) {
       msgHandler.info('Use `quickvault config encrypt 0` to disable encryption');
       const encVal = caesarCipher(val,7);
       quikVault.set(key, encVal);
+      msgHandler.success("Added to vault");
       // Update encryption state for the key
       configHandler.addEncryptionState(key);
     }else{
@@ -93,7 +94,7 @@ async function get([key]: string[]) {
   
   if (prevVal) {
     if(configHandler.checkConfig()){
-      const answer = await msgHandler.ask(`Value for ${key} is encrypted. Are you sure you want to decrypt? (Y/N)`);
+      const answer = await msgHandler.ask(`Value for ${key} is encrypted. Are you sure you want to decrypt? (Y/N) `);
       if (answer === "Y" || answer === "y") {
         msgHandler.info("Actual Value:");
         const decryptedVal = caesarCipher(prevVal,7,true);

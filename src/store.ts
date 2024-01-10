@@ -14,7 +14,6 @@ class Store {
       // Initialize a vault
       writeFileSync(this.vaultFile, JSON.stringify(defaults));
       // TODO: Ascii cli - welcome
-      console.log("Welcome to QuikVault!");
     }
     this.vaultDB = parseVault(this.vaultFile);
   }
