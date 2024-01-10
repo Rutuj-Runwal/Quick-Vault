@@ -8,3 +8,5 @@
 # configs
 package-lock.json
 vault.json
+vault_config.json
+vault_encryption_state.json
