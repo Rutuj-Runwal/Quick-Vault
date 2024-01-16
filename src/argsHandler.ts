@@ -10,6 +10,7 @@ const OPERATION = {
   DELETE: "del",
   GET: "get",
   EDIT: "edit",
+  SEARCH:"search",
   DUMP: "dump",
   CLEAR: "clear",
   ENV:"env",
@@ -46,7 +47,7 @@ function getData(args: Array<string>) {
         `Invalid arguments to ${operationType} command.Expected 2`
       );
     }
-  } else if (operationType === OPERATION.GET || operationType === OPERATION.DELETE || operationType == OPERATION.ENV)  {
+  } else if (operationType === OPERATION.GET || operationType === OPERATION.DELETE || operationType === OPERATION.SEARCH || operationType == OPERATION.ENV)  {
     if(args.length === 2){
       const key = args[args.length - 1];
       return { operationType, data: [key] };

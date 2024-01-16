@@ -26,6 +26,9 @@ switch (parsedArgs?.operationType) {
   case argparse.OPERATION.DELETE:
     remove(parsedArgs.data);
     break;
+  case argparse.OPERATION.SEARCH:
+    search(parsedArgs.data);
+    break;
   case argparse.OPERATION.DUMP:
     dump(quikVault);
     break;
@@ -127,6 +130,27 @@ function remove([key]: string[]) {
   } else {
     msgHandler.warn(`Unable to delete "${key}" - not found in quickvault`);
   }
+}
+
+function search([pattern]: string[]) {
+  // Get all strings -> Match the pattern -> Show matched
+  try{
+    const PATTERN = new RegExp(pattern,"i");
+    const vault = quikVault.dump();
+    let FOUND = false;
+    msgHandler.info(`Searching for keys matching "${pattern}" in quickvault`);
+    for(let key in vault){
+      if(PATTERN.test(key)){
+        FOUND = true;
+        msgHandler.success(key);
+      }
+    }
+    if(!FOUND){
+      msgHandler.warn("No matching keys in vault");
+    }
+  }catch(e){
+    msgHandler.softError("Invalid Pattern - Quickvault supports regex search.");
+  } 
 }
 
 function dump(vaultType:Store) {
