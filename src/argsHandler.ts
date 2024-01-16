@@ -30,16 +30,14 @@ function getOperation(args: Array<string>) {
   }
 }
 
-// Handle config flags
-
 
 // Extract data from cmd args based on type of OPERATION
 function getData(args: Array<string>) {
   const operationType = getOperation(args);
   // TODO: handle invalid no of arguments passed
-  if (args.length === 3) {
+  if (operationType === OPERATION.ADD || operationType === OPERATION.EDIT) {
     // Needs two args: key -> val
-    if (operationType === OPERATION.ADD || operationType === OPERATION.EDIT || operationType === OPERATION.CONFIG) {
+    if (args.length === 3) {
       const key = args[args.length - 2];
       const val = args[args.length - 1];
       return { operationType, data: [key, val] };
@@ -48,11 +46,8 @@ function getData(args: Array<string>) {
         `Invalid arguments to ${operationType} command.Expected 2`
       );
     }
-  } else if (args.length === 2) {
-    if (
-      operationType === OPERATION.GET ||
-      operationType === OPERATION.DELETE || operationType == OPERATION.ENV
-    ) {
+  } else if (operationType === OPERATION.GET || operationType === OPERATION.DELETE || operationType == OPERATION.ENV)  {
+    if(args.length === 2){
       const key = args[args.length - 1];
       return { operationType, data: [key] };
     } else {
@@ -60,11 +55,29 @@ function getData(args: Array<string>) {
         `Invalid arguments to ${operationType} command.Expected 1`
       );
     }
-  } else {
-    // No args for OPERATION of type DUMP and CLEAR [or CONFIG(for View)]
+  } else if (operationType === OPERATION.DUMP || operationType === OPERATION.CLEAR){
+    // No args for OPERATION of type DUMP and CLEAR 
     if (args.length === 1) {
       return { operationType, data: [] };
     } else {
+      msgHandler.softError(
+        `Invalid arguments to ${operationType} command.Expected 0`
+      );
+    }
+  } else if(operationType === OPERATION.CONFIG){
+    // `config` is a special type with two cases
+
+    // Case 1: 3 args - Modifying a specific config
+    if (args.length === 3) {
+      const key = args[args.length - 2];
+      const val = args[args.length - 1];
+      return { operationType, data: [key, val] };
+    } 
+    // Case 2: No args - Viewing all configs 
+    else if(args.length === 1){
+      return { operationType, data: [] };
+    }
+    else {
       msgHandler.softError(
         `Invalid arguments to ${operationType} command.Expected 0`
       );
