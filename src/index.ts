@@ -35,6 +35,9 @@ switch (parsedArgs?.operationType) {
   case argparse.OPERATION.CLEAR:
     clear();
     break;
+  case argparse.OPERATION.STAT:
+    stat();
+    break;
   case argparse.OPERATION.ENV:
     generateEnv(parsedArgs.data);
     break;
@@ -173,6 +176,26 @@ async function clear() {
       `Invalid response, expected "Y" or "N". Received ${answer}`
     );
   }
+}
+
+function stat(){
+  // Displays "stats" regarding current quickvault state
+  const vault = quikVault.dump();
+  const count = Object.keys(vault).length;
+  const path = quikVault.vaultFile;
+  const vaultData = quikVault.stats();
+
+  msgHandler.success("\nQuickvault Stats:\n");
+
+  msgHandler.info(`Key-Value pairs: ${count}`);
+  console.log(`Size (in KB):`+msgHandler.stuffColor(`${vaultData.size/1024}`,1));
+  console.log(`Vault Location:`+msgHandler.stuffColor(`${path}`,0));
+  msgHandler.info("Vault Created on:" + msgHandler.stuffColor(`${vaultData.birthtime}`,0));
+  msgHandler.info(`Vault Last Modified: ${vaultData.mtime}`);
+
+  const encState = configHandler.checkConfig()? "ON":"OFF";
+  const encColor = encState==="ON"?0:3;
+  msgHandler.info("Encryption Status: "+ msgHandler.stuffColor(encState,encColor));
 }
 
 function generateEnv([path]:string[]){

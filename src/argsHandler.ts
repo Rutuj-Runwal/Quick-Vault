@@ -13,6 +13,7 @@ const OPERATION = {
   SEARCH:"search",
   DUMP: "dump",
   CLEAR: "clear",
+  STAT:"stat",
   ENV:"env",
   CONFIG:"config"
 };
@@ -56,7 +57,7 @@ function getData(args: Array<string>) {
         `Invalid arguments to ${operationType} command.Expected 1`
       );
     }
-  } else if (operationType === OPERATION.DUMP || operationType === OPERATION.CLEAR){
+  } else if (operationType === OPERATION.DUMP || operationType === OPERATION.CLEAR || operationType === OPERATION.STAT){
     // No args for OPERATION of type DUMP and CLEAR 
     if (args.length === 1) {
       return { operationType, data: [] };

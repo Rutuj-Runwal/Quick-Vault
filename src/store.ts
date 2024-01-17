@@ -1,4 +1,4 @@
-import { existsSync, writeFileSync, readFileSync, write } from "fs";
+import { existsSync, writeFileSync, readFileSync, statSync } from "fs";
 
 interface JSON_OBJ {
   [key: string]: string | undefined;
@@ -50,6 +50,10 @@ class Store {
 
   clear() {
     writeFileSync(this.vaultFile, JSON.stringify({}));
+  }
+  stats(){
+    const stats = statSync(this.vaultFile);
+    return stats;
   }
 }
 

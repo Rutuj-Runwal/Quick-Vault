@@ -64,4 +64,25 @@ function help() {
   console.log(STYLING.blue + "TODO: quickvault -h" + STYLING.reset);
 }
 
-export default { welcome, ask, help, error, success, info, warn, softError };
+function stuffColor(message:string,color:number){
+  return helper(color) + message + STYLING.reset;
+}
+
+function helper(color:number){
+  switch(color){
+    case 0:
+      return STYLING.green;
+    case 1:
+      return STYLING.blue;
+    case 2:
+      return STYLING.yellow;
+    case 3:
+      return STYLING.red;
+    case 4:  
+      return STYLING.background.red
+    default:
+      return STYLING.blue;
+  }
+}
+
+export default { welcome, ask, help, error, success, info, warn, softError,stuffColor };
