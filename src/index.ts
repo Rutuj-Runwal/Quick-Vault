@@ -188,13 +188,13 @@ function stat(){
   msgHandler.success("\nQuickvault Stats:\n");
 
   msgHandler.info(`Key-Value pairs: ${count}`);
-  console.log(`Size (in KB):`+msgHandler.stuffColor(`${vaultData.size/1024}`,1));
-  console.log(`Vault Location:`+msgHandler.stuffColor(`${path}`,0));
-  msgHandler.info("Vault Created on:" + msgHandler.stuffColor(`${vaultData.birthtime}`,0));
+  console.log(`Size (in KB):`+msgHandler.stuffColor(`${vaultData.size/1024}`,'blue'));
+  console.log(`Vault Location:`+msgHandler.stuffColor(`${path}`,'green'));
+  msgHandler.info("Vault Created on:" + msgHandler.stuffColor(`${vaultData.birthtime}`,'green'));
   msgHandler.info(`Vault Last Modified: ${vaultData.mtime}`);
 
   const encState = configHandler.checkConfig()? "ON":"OFF";
-  const encColor = encState==="ON"?0:3;
+  const encColor = encState==="ON"?"green":"red";
   msgHandler.info("Encryption Status: "+ msgHandler.stuffColor(encState,encColor));
 }
 
