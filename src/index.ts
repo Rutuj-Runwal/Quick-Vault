@@ -5,9 +5,10 @@ import msgHandler from "./handler/msgHandler.js";
 import { existsSync, writeFileSync } from "fs";
 import configHandler from "./handler/configHandler.js";
 import caesarCipher from "./utli/cipher.js";
+import CORE_PATH from "./utli/getPath.js";
 
 const QUIK_COMMANDS = ["add", "edit", "get", "remove", "dump", "clear"];
-const QUIK_VAULT_PATH = "./";
+const QUIK_VAULT_PATH = CORE_PATH;
 
 const quikVault = new Store(QUIK_VAULT_PATH,"vault.json");
 const configVault = new Store(QUIK_VAULT_PATH,"vault_config.json",{encrypt:0});
