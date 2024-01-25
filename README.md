@@ -20,9 +20,19 @@ Quickvault allows for storing and retriving key value pairs using the commandlin
 <br/>Edit the value for a corresponding key
 <br/>
 
+- del
+<br/>`quickvault del KEY`
+<br/>Delete a key-value pair
+<br/>
+
 - dump:
 <br/>`quickvault dump`
 <br/>Get all values in json format on the cli
+<br/>
+
+- search:
+<br/>`quickvault search PATTERN`
+<br/>Search for keys matching a particular pattern
 <br/>
 
 - clear:
