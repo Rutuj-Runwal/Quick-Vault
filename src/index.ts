@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import Store from "./store.js";
-import argparse from "./argsHandler.js";
-import msgHandler from "./msgHandler.js";
+import Store from "./utli/store.js";
+import argparse from "./handler/argsHandler.js";
+import msgHandler from "./handler/msgHandler.js";
 import { existsSync, writeFileSync } from "fs";
-import configHandler from "./configHandler.js";
-import caesarCipher from "./cipher.js";
+import configHandler from "./handler/configHandler.js";
+import caesarCipher from "./utli/cipher.js";
 
 const QUIK_COMMANDS = ["add", "edit", "get", "remove", "dump", "clear"];
 const QUIK_VAULT_PATH = "./";

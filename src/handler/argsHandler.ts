@@ -2,7 +2,7 @@
 // quickvault -> add path usr/lib/
 // quickvault -> get path
 import msgHandler from "./msgHandler.js";
-import Store from "./store.js";
+import Store from "../utli/store.js";
 
 // Types of operation in quickvault
 const OPERATION = {
