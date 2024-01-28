@@ -8,7 +8,6 @@ import caesarCipher from "./utli/cipher.js";
 import {OPERATION} from "./consts/consts.js";
 import CORE_PATH from "./utli/getPath.js";
 
-const QUIK_COMMANDS = ["add", "edit", "get", "remove", "dump", "clear"];
 const QUIK_VAULT_PATH = CORE_PATH;
 
 const quikVault = new Store(QUIK_VAULT_PATH,"vault.json");
@@ -55,10 +54,9 @@ switch (parsedArgs?.operationType) {
     }else{
       msgHandler.info("Invalid Configuration parameter.Run `quickvault config` to view configuration options.");
     }
+    break;
   case OPERATION.HELP:
     msgHandler.help();
-    break;
-  default:
     break;
 }
 
@@ -230,4 +228,3 @@ function generateEnv([path]:string[]){
 }
 
 export default configVault;
-// TODO: Add a `Did you mean?` spell check message

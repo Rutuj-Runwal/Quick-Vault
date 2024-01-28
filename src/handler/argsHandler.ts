@@ -3,6 +3,7 @@
 // quickvault -> get path
 import msgHandler from "./msgHandler.js";
 import {OPERATION} from "../consts/consts.js";
+import commandRecommender from "../utli/lvt.js";
 
 // Extract OPEARTION from cmd args
 function getOperation(args: Array<string>) {
@@ -10,9 +11,10 @@ function getOperation(args: Array<string>) {
   if (Object.values(OPERATION).includes(operation)) {
     return operation;
   } else {
+    
     msgHandler.warn(`Undefined operation for QuickVault: ${operation}`);
     
-    msgHandler.info("Possible commands: " + JSON.stringify(Object.values(OPERATION)));
+    commandRecommender(operation);
 
     console.log("Run" + msgHandler.stuffColor(" quickvault help ",'cyan')+ "for usage details.")
   }
