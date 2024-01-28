@@ -2,22 +2,7 @@
 // quickvault -> add path usr/lib/
 // quickvault -> get path
 import msgHandler from "./msgHandler.js";
-import Store from "../utli/store.js";
-
-// Types of operation in quickvault
-const OPERATION = {
-  ADD: "add",
-  DELETE: "del",
-  GET: "get",
-  EDIT: "edit",
-  SEARCH:"search",
-  DUMP: "dump",
-  CLEAR: "clear",
-  STAT:"stat",
-  ENV:"env",
-  CONFIG:"config",
-  HELP:"help"
-};
+import {OPERATION} from "../consts/consts.js";
 
 // Extract OPEARTION from cmd args
 function getOperation(args: Array<string>) {
@@ -28,11 +13,10 @@ function getOperation(args: Array<string>) {
     msgHandler.warn(`Undefined operation for QuickVault: ${operation}`);
     
     msgHandler.info("Possible commands: " + JSON.stringify(Object.values(OPERATION)));
-    
+
     console.log("Run" + msgHandler.stuffColor(" quickvault help ",'cyan')+ "for usage details.")
   }
 }
-
 
 // Extract data from cmd args based on type of OPERATION
 function getData(args: Array<string>) {
@@ -98,4 +82,4 @@ function parseArgs() {
   }
 }
 
-export default { parseArgs, OPERATION };
+export default parseArgs;

@@ -5,6 +5,7 @@ import argparse from "./handler/argsHandler.js";
 import { existsSync, writeFileSync } from "fs";
 import configHandler from "./handler/configHandler.js";
 import caesarCipher from "./utli/cipher.js";
+import {OPERATION} from "./consts/consts.js";
 import CORE_PATH from "./utli/getPath.js";
 
 const QUIK_COMMANDS = ["add", "edit", "get", "remove", "dump", "clear"];
@@ -12,37 +13,37 @@ const QUIK_VAULT_PATH = CORE_PATH;
 
 const quikVault = new Store(QUIK_VAULT_PATH,"vault.json");
 const configVault = new Store(QUIK_VAULT_PATH,"vault_config.json",{encrypt:0});
-const parsedArgs = argparse.parseArgs();
+const parsedArgs = argparse();
 
 switch (parsedArgs?.operationType) {
-  case argparse.OPERATION.ADD:
+  case OPERATION.ADD:
     add(parsedArgs.data);
     break;
-  case argparse.OPERATION.EDIT:
+  case OPERATION.EDIT:
     edit(parsedArgs.data,quikVault);
     break;
-  case argparse.OPERATION.GET:
+  case OPERATION.GET:
     get(parsedArgs.data);
     break;
-  case argparse.OPERATION.DELETE:
+  case OPERATION.DELETE:
     remove(parsedArgs.data);
     break;
-  case argparse.OPERATION.SEARCH:
+  case OPERATION.SEARCH:
     search(parsedArgs.data);
     break;
-  case argparse.OPERATION.DUMP:
+  case OPERATION.DUMP:
     dump(quikVault);
     break;
-  case argparse.OPERATION.CLEAR:
+  case OPERATION.CLEAR:
     clear();
     break;
-  case argparse.OPERATION.STAT:
+  case OPERATION.STAT:
     stat();
     break;
-  case argparse.OPERATION.ENV:
+  case OPERATION.ENV:
     generateEnv(parsedArgs.data);
     break;
-  case argparse.OPERATION.CONFIG:
+  case OPERATION.CONFIG:
     if(parsedArgs.data[0]===undefined){
       dump(configVault);
     }else if(parsedArgs.data[0]==="encrypt"){
@@ -54,7 +55,7 @@ switch (parsedArgs?.operationType) {
     }else{
       msgHandler.info("Invalid Configuration parameter.Run `quickvault config` to view configuration options.");
     }
-  case argparse.OPERATION.HELP:
+  case OPERATION.HELP:
     msgHandler.help();
     break;
   default:
