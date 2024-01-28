@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import Store from "./utli/store.js";
-import argparse from "./handler/argsHandler.js";
 import msgHandler from "./handler/msgHandler.js";
+import argparse from "./handler/argsHandler.js";
 import { existsSync, writeFileSync } from "fs";
 import configHandler from "./handler/configHandler.js";
 import caesarCipher from "./utli/cipher.js";
@@ -54,8 +54,10 @@ switch (parsedArgs?.operationType) {
     }else{
       msgHandler.info("Invalid Configuration parameter.Run `quickvault config` to view configuration options.");
     }
+  case argparse.OPERATION.HELP:
+    msgHandler.help();
+    break;
   default:
-    // TODO: Print help/docs
     break;
 }
 
@@ -188,15 +190,15 @@ function stat(){
 
   msgHandler.success("\nQuickvault Stats:\n");
 
-  msgHandler.info(`Key-Value pairs: ${count}`);
-  console.log(`Size (in KB):`+msgHandler.stuffColor(`${vaultData.size/1024}`,'blue'));
-  console.log(`Vault Location:`+msgHandler.stuffColor(`${path}`,'green'));
-  msgHandler.info("Vault Created on:" + msgHandler.stuffColor(`${vaultData.birthtime}`,'green'));
-  msgHandler.info(`Vault Last Modified: ${vaultData.mtime}`);
+  console.log(`Key-Value pairs: ` + msgHandler.stuffColor(`${count}`,'yellow'));
+  console.log(`Size (in KB): `+msgHandler.stuffColor(`${vaultData.size/1024}`,'blue'));
+  console.log(`Vault Location: `+msgHandler.stuffColor(`${path}`,'green'));
+  console.log("Vault Created on: " + msgHandler.stuffColor(`${vaultData.birthtime}`,'cyan'));
+  console.info("Vault Last Modified: "+ msgHandler.stuffColor(`${vaultData.mtime}`,'yellow'));
 
   const encState = configHandler.checkConfig()? "ON":"OFF";
   const encColor = encState==="ON"?"green":"red";
-  msgHandler.info("Encryption Status: "+ msgHandler.stuffColor(encState,encColor));
+  console.info("Encryption Status: "+ msgHandler.stuffColor(encState,encColor));
 }
 
 function generateEnv([path]:string[]){

@@ -15,7 +15,8 @@ const OPERATION = {
   CLEAR: "clear",
   STAT:"stat",
   ENV:"env",
-  CONFIG:"config"
+  CONFIG:"config",
+  HELP:"help"
 };
 
 // Extract OPEARTION from cmd args
@@ -25,10 +26,10 @@ function getOperation(args: Array<string>) {
     return operation;
   } else {
     msgHandler.warn(`Undefined operation for QuickVault: ${operation}`);
-    // TODO: Print help/docs
-    msgHandler.info(
-      "Possible commands: " + JSON.stringify(Object.values(OPERATION))
-    );
+    
+    msgHandler.info("Possible commands: " + JSON.stringify(Object.values(OPERATION)));
+    
+    console.log("Run" + msgHandler.stuffColor(" quickvault help ",'cyan')+ "for usage details.")
   }
 }
 
@@ -57,7 +58,7 @@ function getData(args: Array<string>) {
         `Invalid arguments to ${operationType} command.Expected 1`
       );
     }
-  } else if (operationType === OPERATION.DUMP || operationType === OPERATION.CLEAR || operationType === OPERATION.STAT){
+  } else if (operationType === OPERATION.DUMP || operationType === OPERATION.CLEAR || operationType === OPERATION.STAT|| operationType === OPERATION.HELP){
     // No args for OPERATION of type DUMP and CLEAR 
     if (args.length === 1) {
       return { operationType, data: [] };

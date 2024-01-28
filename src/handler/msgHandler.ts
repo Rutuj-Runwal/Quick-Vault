@@ -1,5 +1,8 @@
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "process";
+import argparse from './argsHandler.js';
+
+const OPERATION = argparse.OPERATION;
 
 const STYLING = {
   reset: "\x1b[0m",
@@ -24,6 +27,19 @@ const STYLING = {
     white: "\x1b[47m",
   },
 };
+
+const DESCRIPTION = {
+  [OPERATION.ADD]: {desc: 'Add KEY and its corresponding VALUE to vault',usage: 'quickvault add KEY VALUE'},
+  [OPERATION.GET]:{desc: 'Get a value from the vault for a corresponding key',usage: 'quickvault get KEY'},
+  [OPERATION.EDIT]:{desc: 'Edit the value for a corresponding key',usage: 'quickvault edit KEY VALUE'},
+  [OPERATION.SEARCH]:{desc:'Search for keys matching specified pattern',usage:'quickvault search PATTERN'},
+  [OPERATION.DUMP]:{desc: 'Get all values in the vault',usage: 'quickvault dump'},
+  [OPERATION.DELETE]:{desc:'Delete a specific key-value pair from vault',usage:'quickvault del KEY'},
+  [OPERATION.CLEAR]:{desc:'Empty the vault',usage: 'quickvault clear'},
+  [OPERATION.STAT]:{desc:'Stats for the vault',usage:'quickvault stat'},
+  [OPERATION.CONFIG]:{desc:'Change configuration options.\n\t"quickvault config" to view availbale presets.',usage:'quickvault config OPTION VALUE'},
+  [OPERATION.ENV]:{desc:'Generate a .env file at the specified path usig vault data',usage:'quickvault env LOCATION'}
+}
 function error(message: string) {
   console.error(STYLING.background.red + "%s " + STYLING.reset, message);
 }
@@ -31,7 +47,7 @@ function error(message: string) {
 function welcome() {
   success("Welcome to QuickVault!");
   success("Ⓒ Rutuj Runwal 2024-Present  ");
-  info("Commands: add,get,edit,delete,dump and clear ");
+  info("quickvault help - for detailed usage");
 }
 
 function success(message: string) {
@@ -61,7 +77,16 @@ async function ask(message: string, handleAnswers?: string[]) {
 }
 
 function help() {
-  console.log(STYLING.blue + "TODO: quickvault -h" + STYLING.reset);
+  success("Quick Vault - A fast and reliable key-value store Command Line Interface.");
+  info('\nUsage:');
+  console.log('  quickvault <command> [options]');
+  success('\nAvailable commands and their usage:\n');
+  Object.keys(DESCRIPTION).forEach(cmd => {
+    console.log("  "+cmd+":");
+    console.log(stuffColor(`\t${DESCRIPTION[cmd].usage}`,'cyan'));
+    console.log(stuffColor(`\t${DESCRIPTION[cmd].desc}`,'yellow'));
+    console.log("\n");
+  });
 }
 
 function stuffColor(message: string, color: string) {
@@ -78,6 +103,8 @@ function helper(color: string) {
       return STYLING.yellow;
     case "red":
       return STYLING.red;
+    case 'cyan':
+      return STYLING.cyan;
     case "bgr":
       return STYLING.background.red;
     default:
