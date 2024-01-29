@@ -42,6 +42,9 @@ switch (parsedArgs?.operationType) {
   case OPERATION.ENV:
     generateEnv(parsedArgs.data);
     break;
+  case OPERATION.BACKUP:
+    generateBackup(parsedArgs.data);
+    break;
   case OPERATION.CONFIG:
     if(parsedArgs.data[0]===undefined){
       dump(configVault);
@@ -217,6 +220,29 @@ function generateEnv([path]:string[]){
     // Save to path
     try{
       writeFileSync(path+FILE_NAME, envFormat);
+    }catch(e){
+      msgHandler.warn("Cannot save env");
+      msgHandler.softError(e as string);
+    }
+    
+  }else{
+    msgHandler.softError(`Invalid path: ${path}`);
+  }
+}
+
+function generateBackup([path]:string[]){
+  if(path==="." || path==="./"){
+    path = process.cwd();
+  }
+  if(existsSync(path)){
+    const FILE_NAME = "//backup.json";
+
+    // Generate Backup json format:
+    const vault = quikVault.dump();
+
+    // Save to path
+    try{
+      writeFileSync(path+FILE_NAME, JSON.stringify(vault));
     }catch(e){
       msgHandler.warn("Cannot save env");
       msgHandler.softError(e as string);

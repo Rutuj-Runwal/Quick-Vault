@@ -35,7 +35,7 @@ function getData(args: Array<string>) {
         `Invalid arguments to ${operationType} command.Expected 2`
       );
     }
-  } else if (operationType === OPERATION.GET || operationType === OPERATION.DELETE || operationType === OPERATION.SEARCH || operationType == OPERATION.ENV)  {
+  } else if (operationType === OPERATION.GET || operationType === OPERATION.DELETE || operationType === OPERATION.SEARCH || operationType == OPERATION.ENV || operationType == OPERATION.BACKUP)  {
     if(args.length === 2){
       const key = args[args.length - 1];
       return { operationType, data: [key] };
