@@ -55,6 +55,33 @@ class Store {
     const stats = statSync(this.vaultFile);
     return stats;
   }
+  performRestore(option: string,path:string){
+    if(existsSync(path)){
+      const newData = parseVault(path);
+      if(option==="--replace"){
+        // Empty the vault file
+        this.clear();
+
+        // Rewrite 
+        try{
+          writeFileSync(this.vaultFile, JSON.stringify(newData));
+        }catch(e){
+          console.log(e);
+        }
+      }
+      else if(option==="--append"){
+        let currentData = this.dump();
+        let append = {...currentData,...newData};
+
+        try{
+          writeFileSync(this.vaultFile, JSON.stringify(append));
+        }catch(e){
+          console.log(e);
+        }
+      }
+    }
+  }
+  
 }
 
 function parseVault(path: string) {
@@ -66,5 +93,6 @@ function parseVault(path: string) {
     return {};
   }
 }
+
 
 export default Store;

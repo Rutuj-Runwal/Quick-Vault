@@ -45,6 +45,9 @@ switch (parsedArgs?.operationType) {
   case OPERATION.BACKUP:
     generateBackup(parsedArgs.data);
     break;
+  case OPERATION.RESTORE:
+    quikVault.performRestore(parsedArgs.data[0],parsedArgs.data[1]);
+    break;
   case OPERATION.CONFIG:
     if(parsedArgs.data[0]===undefined){
       dump(configVault);
