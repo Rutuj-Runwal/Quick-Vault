@@ -11,6 +11,7 @@ const OPERATION = {
   ENV:"env",
   CONFIG:"config",
   BACKUP:"backup",
+  RESTORE:"restore",
   HELP:"help"
 };
 
@@ -25,6 +26,7 @@ const DESCRIPTION = {
   [OPERATION.STAT]:{desc:'Stats for the vault',usage:'quickvault stat'},
   [OPERATION.CONFIG]:{desc:'Change configuration options.\n\t"quickvault config" to view availbale presets.',usage:'quickvault config OPTION VALUE'},
   [OPERATION.BACKUP]:{desc: "Create a backup(backup.json) of vault's current state at specified location",usage:'quickvault backup LOCATION'},
+  [OPERATION.RESTORE]:{desc:'Restore a key-value json from specified path.\n\tOptions:"append" OR "replace"',usage:'quickvault restore OPTION PATH'},
   [OPERATION.ENV]:{desc:'Generate a .env file at the specified path usig vault data',usage:'quickvault env LOCATION'}
 }
 

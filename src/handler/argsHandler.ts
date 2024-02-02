@@ -24,11 +24,16 @@ function getOperation(args: Array<string>) {
 function getData(args: Array<string>) {
   const operationType = getOperation(args);
   // TODO: handle invalid no of arguments passed
-  if (operationType === OPERATION.ADD || operationType === OPERATION.EDIT) {
+  if (operationType === OPERATION.ADD || operationType === OPERATION.EDIT ||operationType === OPERATION.RESTORE) {
     // Needs two args: key -> val
     if (args.length === 3) {
       const key = args[args.length - 2];
       const val = args[args.length - 1];
+      // TODO: Better filteration - remove hardcoded key comparison for RESTORE OPT
+      if (operationType == OPERATION.RESTORE && !(key==="--replace" || key==="--append")){
+        msgHandler.softError(`Invalid option for restore: ${key} | Available: "--replace" OR "--append"`);
+        return;
+      }
       return { operationType, data: [key, val] };
     } else {
       msgHandler.softError(
