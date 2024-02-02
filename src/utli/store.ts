@@ -58,27 +58,16 @@ class Store {
   performRestore(option: string,path:string){
     if(existsSync(path)){
       const newData = parseVault(path);
-      if(option==="--replace"){
-        // Empty the vault file
-        this.clear();
+      let currentVaultData = this.dump();
+      const restoreData = option === "--replace"? newData : {...currentVaultData,...newData};
 
-        // Rewrite 
-        try{
-          writeFileSync(this.vaultFile, JSON.stringify(newData));
-        }catch(e){
-          console.log(e);
-        }
+      try{
+        writeFileSync(this.vaultFile, JSON.stringify(restoreData));
+      }catch(e){
+        console.log(e);
       }
-      else if(option==="--append"){
-        let currentData = this.dump();
-        let append = {...currentData,...newData};
-
-        try{
-          writeFileSync(this.vaultFile, JSON.stringify(append));
-        }catch(e){
-          console.log(e);
-        }
-      }
+    }else{
+      console.log("Invalid json file path!\nCannot perform vault restore.");
     }
   }
   
