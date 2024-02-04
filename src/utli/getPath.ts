@@ -31,7 +31,7 @@ try{
 }catch(e){
     if(isNodeError(e) && e instanceof Error){
         // https://nodejs.org/api/errors.html#common-system-errors
-        if(e.code==='EACCES' || e.code==='EPERM'){
+        if(e.code==='EACCES' || e.code==='EPERM' || e.code==='ENOENT'){
             CORE_PATH = "./";
         }
     }

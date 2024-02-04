@@ -247,8 +247,8 @@ function generateBackup([path]:string[]){
     try{
       writeFileSync(path+FILE_NAME, JSON.stringify(vault));
     }catch(e){
-      msgHandler.warn("Cannot save env");
-      msgHandler.softError(e as string);
+      msgHandler.warn(`Cannot create backup at path:${path}`);
+      console.log(msgHandler.stuffColor(`Likely due to a permission error.Provide a different location!`,'cyan'));
     }
     
   }else{
