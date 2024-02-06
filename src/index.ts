@@ -5,7 +5,7 @@ import argparse from "./handler/argsHandler.js";
 import { existsSync, writeFileSync } from "fs";
 import configHandler from "./handler/configHandler.js";
 import caesarCipher from "./utli/cipher.js";
-import {OPERATION} from "./consts/consts.js";
+import {OPERATION,isFileAccessError} from "./consts/consts.js";
 import CORE_PATH from "./utli/getPath.js";
 
 const QUIK_VAULT_PATH = CORE_PATH;
@@ -76,13 +76,12 @@ function add([key, val]: string[]) {
       msgHandler.info('Use `quickvault config encrypt 0` to disable encryption');
       const encVal = caesarCipher(val,7);
       quikVault.set(key, encVal);
-      msgHandler.success("Added to vault");
       // Update encryption state for the key
       configHandler.addEncryptionState(key);
     }else{
       quikVault.set(key,val);
     }
-    
+    msgHandler.success("Added to vault");
   }
 }
 
@@ -224,8 +223,10 @@ function generateEnv([path]:string[]){
     try{
       writeFileSync(path+FILE_NAME, envFormat);
     }catch(e){
-      msgHandler.warn("Cannot save env");
-      msgHandler.softError(e as string);
+      if(isFileAccessError(e as Error)){
+        msgHandler.warn("Cannot save env");
+        console.log(msgHandler.stuffColor(`Likely due to a permission error.Provide a different location!`,'cyan'));
+      }
     }
     
   }else{
@@ -247,8 +248,10 @@ function generateBackup([path]:string[]){
     try{
       writeFileSync(path+FILE_NAME, JSON.stringify(vault));
     }catch(e){
-      msgHandler.warn(`Cannot create backup at path:${path}`);
-      console.log(msgHandler.stuffColor(`Likely due to a permission error.Provide a different location!`,'cyan'));
+      if(isFileAccessError(e as Error)){
+        msgHandler.warn(`Cannot create backup at path:${path}`);
+        console.log(msgHandler.stuffColor(`Likely due to a permission error.Provide a different location!`,'cyan'));
+      }
     }
     
   }else{

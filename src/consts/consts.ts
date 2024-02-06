@@ -30,4 +30,24 @@ const DESCRIPTION = {
   [OPERATION.ENV]:{desc:'Generate a .env file at the specified path usig vault data',usage:'quickvault env LOCATION'}
 }
 
-export {OPERATION,DESCRIPTION};
+// https://dev.to/jdbar/the-problem-with-handling-node-js-errors-in-typescript-and-the-workaround-m64
+// https://stackoverflow.com/a/77652817
+const isNodeError = (error: any): error is NodeJS.ErrnoException => {
+  return error instanceof Error && 'code' in error;
+};
+
+/*
+File error permission type check
+Returns true for error of type: permission errors/not accesssible
+*/
+const isFileAccessError = (e:Error) => {
+  if(isNodeError(e) && e instanceof Error){
+    // https://nodejs.org/api/errors.html#common-system-errors
+    if(e.code==='EACCES' || e.code==='EPERM' || e.code==='ENOENT' || e.code==='EROFS'){
+      return true;
+    }
+  }
+  return false;
+}
+
+export {OPERATION,DESCRIPTION,isFileAccessError};

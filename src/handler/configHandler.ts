@@ -4,7 +4,7 @@ import Store from "../utli/store.js";
 import CORE_PATH from "../utli/getPath.js";
 
 const QUIK_VAULT_PATH = CORE_PATH;
-const configVault = new Store(QUIK_VAULT_PATH,"vault_config.json",{encrypt:0});
+const configVault = new Store(QUIK_VAULT_PATH,"vault_config.json",{encrypt:"0"});
 const encrpytionStateVault = new Store(QUIK_VAULT_PATH,"vault_encryption_state.json");
 
 // Check for config options

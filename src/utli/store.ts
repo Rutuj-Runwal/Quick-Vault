@@ -1,4 +1,5 @@
 import { existsSync, writeFileSync, readFileSync, statSync } from "fs";
+import { isFileAccessError } from "../consts/consts.js";
 
 interface JSON_OBJ {
   [key: string]: string | undefined;
@@ -64,7 +65,9 @@ class Store {
       try{
         writeFileSync(this.vaultFile, JSON.stringify(restoreData));
       }catch(e){
-        console.log(e);
+        if(isFileAccessError(e as Error)){
+          console.log("Permission Error.");
+        }
       }
     }else{
       console.log("Invalid json file path!\nCannot perform vault restore.");
