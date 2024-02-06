@@ -1,5 +1,7 @@
 ### Quick Vault
-
+<div align="center">
+  <img width="170" alt="quickvault logo" src="https://github.com/Rutuj-Runwal/Quick-Vault/assets/59436520/03c32536-97b3-41a4-bab5-f4ac5b247a35" >
+</div>
 A fast and reliable key-value store CLI.
 
 Quickvault allows for storing and retriving key value pairs using the commandline.
