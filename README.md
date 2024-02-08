@@ -2,9 +2,11 @@
 <div align="center">
   <img width="170" alt="quickvault logo" src="https://github.com/Rutuj-Runwal/Quick-Vault/assets/59436520/03c32536-97b3-41a4-bab5-f4ac5b247a35" >
 </div>
+<h2 align="center"><code>npm install -g quickvault </code></h2>
 A fast and reliable key-value store CLI.
 
-Quickvault allows for storing and retriving key value pairs using the commandline.
+Quickvault is a zero dependency cli application for persistent storage of environment variables
+<br/>It allows for storing and retrieving key value pairs using the commandline.
 
 #### Commands:
 
@@ -84,10 +86,18 @@ Quickvault allows for storing and retriving key value pairs using the commandlin
   <br/>Restore a key-value json from specified path.
   <br/>Options:"append" OR "replace"
 
+- config
+  <br/>`quickvault config OPTION VALUE`
+  <br/>Change configuration options - (encryption)
+  <br/>"quickvault config" to view availbale pre-sets.
+
 <br/>
 
 Command Recommendtation suggests nearset possible matching command in case of typos
 <br/>Command Recommendtation is based on [Levenshtein distance](https://github.com/Rutuj-Runwal/Quick-Vault/blob/master/src/utli/lvt.ts)
 <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/autocorrect.svg" height="270" />
-  <br/>
+<img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/autocorrect.svg" height="270" />
+<br/>
+<br/>
+
+<a href="https://github.com/Rutuj-Runwal/Quick-Vault"><h3 align="center">⭐ Don't forget to leave a star! ⭐</h3></a>
