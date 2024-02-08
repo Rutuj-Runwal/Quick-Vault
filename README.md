@@ -1,6 +1,6 @@
 ### Quick Vault
 <div align="center">
-  <img width="170" alt="quickvault logo" src="https://github.com/Rutuj-Runwal/Quick-Vault/assets/59436520/03c32536-97b3-41a4-bab5-f4ac5b247a35" >
+  <img width="200" alt="quickvault logo" src="https://github.com/Rutuj-Runwal/Quick-Vault/assets/59436520/30553cc9-9a86-4822-9b06-2e017ddb8fab" />
 </div>
 <h2 align="center"><code>npm install -g quickvault </code></h2>
 A fast and reliable key-value store CLI.
@@ -20,56 +20,56 @@ Quickvault is a zero dependency cli application for persistent storage of enviro
   <br/>`quickvault add KEY VALUE`
   <br/>Add KEY and its corresponding value to vault
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/add.svg" height="275" />
+  <img alt="Demonstrates add command - Add KEY and its corresponding value to vault" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/add.svg" height="275" />
   <br/>
 
 - get:
   <br/>`quickvault get KEY`
   <br/>Get a value from the vault for a corresponding key
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/get.svg" height="300" />
+  <img alt="Demonstrates get command - Get a value from the vault for a corresponding key" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/get.svg" height="300" />
   <br/>
 
 - edit
   <br/>`quickvault edit KEY VALUE`
   <br/>Edit the value for a corresponding key
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/edit.svg" height="300" />
+  <img alt="Demonstrates edit command - Edit the value for a corresponding key" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/edit.svg" height="300" />
   <br/>
   
 - del
   <br/>`quickvault del KEY`
   <br/>Delete a key-value pair
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/del.svg" height="300" />
+  <img alt="Demonstrates delete command - Delete a key-value pair" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/del.svg" height="300" />
   <br/>
 
 - dump:
   <br/>`quickvault dump`
   <br/>Get all values in json format on the cli
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/dump.svg" height="335" />
+  <img alt="dump command - Get all values in json format on the cli" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/dump.svg" height="335" />
   <br/>
 
 - stat:
   <br/>`quickvault stat`
   <br/>Stats for the vault
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/stat.svg" height="325" />
+  <img alt="stat command - displays no of keys in vault,location of vault, size, last access time" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/stat.svg" height="325" />
   <br/>
 
 - search:
   <br/>`quickvault search PATTERN`
   <br/>Search for keys matching a particular pattern
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/search.svg" height="260" />
+  <img alt="Quickvault Search command for keys matching a particular pattern" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/search.svg" height="260" />
   <br/>
 
 - clear:
   <br/>Empty the vault
   <br/>`quickvault clear`
   <br/><br/>
-  <img src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/clear.svg" height="330" />
+  <img alt="Demonstrates clear command - resets the vault by removing all key-value pairs" src="https://github.com/Rutuj-Runwal/Quick-Vault/raw/master/assets/clear.svg" height="330" />
   <br/>
   
 - env:
