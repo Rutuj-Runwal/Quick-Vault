@@ -10,6 +10,10 @@
     "start": "tsc && npm link"
   },
   "keywords": ["quickvault","cli","key","value","store"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rutuj-Runwal/Quick-Vault.git"
+  },
   "author": "Rutuj Runwal",
   "license": "MIT",
   "devDependencies": {
