@@ -1,6 +1,6 @@
 {
   "name": "quickvault",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "A fast and reliable key-value store CLI[BETA]",
   "main": "./src/index.ts",
   "bin": "./bin/index.js",

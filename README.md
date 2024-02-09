@@ -4,14 +4,14 @@
 </div>
 <h2 align="center"><code>npm install -g quickvault </code></h2>
 A fast and reliable key-value store CLI.
-
+<br/>
 Quickvault is a zero dependency cli application for persistent storage of environment variables
 <br/>It allows for storing and retrieving key value pairs using the commandline.
 
 #### Commands:
 
 - help
-  <br/> Get usae details and available commands for quickvault
+  <br/> Get usage details and available commands for quickvault
   <br/>`quickvault help`
   <br/>
 
