@@ -5,24 +5,18 @@ import {DESCRIPTION} from "../consts/consts.js";
 const STYLING = {
   reset: "\x1b[0m",
   //text color
-  black: "\x1b[30m",
   red: "\x1b[31m",
   green: "\x1b[32m",
   yellow: "\x1b[33m",
   blue: "\x1b[34m",
-  magenta: "\x1b[35m",
   cyan: "\x1b[36m",
-  white: "\x1b[37m",
   //background color
   background: {
-    black: "\x1b[40m",
     red: "\x1b[41m",
     green: "\x1b[42m",
     yellow: "\x1b[43m",
     blue: "\x1b[44m",
-    magenta: "\x1b[45m",
-    cyan: "\x1b[46m",
-    white: "\x1b[47m",
+    cyan: "\x1b[46m"
   },
 };
 
@@ -32,7 +26,7 @@ function error(message: string) {
 
 function welcome() {
   success("Welcome to QuickVault!");
-  success("Ⓒ Rutuj Runwal 2024-Present  ");
+  success("Ⓒ Rutuj S. Runwal 2024-Present  ");
   info("quickvault help - for detailed usage");
 }
 
@@ -62,8 +56,20 @@ async function ask(message: string, handleAnswers?: string[]) {
   return answer;
 }
 
+async function askHelper(message:string){
+  let answer = (await ask(message)).trim();
+  if (answer === "Y" || answer === "y") {
+    return true;
+  } else if (answer === "N" || answer === "n") {
+    return false;
+  } else {
+    error(`Invalid response, expected "Y" or "N". Received "${answer}"`);
+  }
+}
+
 function help() {
   success("Quick Vault - A fast and reliable key-value store Command Line Interface.");
+  console.log(stuffColor('Copyright Ⓒ Rutuj S. Runwal','cyan'));
   info('\nUsage:');
   console.log('  quickvault <command> [options]');
   success('\nAvailable commands and their usage:\n');
@@ -98,14 +104,4 @@ function helper(color: string) {
   }
 }
 
-export default {
-  welcome,
-  ask,
-  help,
-  error,
-  success,
-  info,
-  warn,
-  softError,
-  stuffColor,
-};
+export default {welcome,askHelper,help,error,success,info,warn,softError,stuffColor};

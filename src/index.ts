@@ -113,18 +113,15 @@ async function get([key]: string[]) {
   
   if (prevVal) {
     if(configHandler.checkEncryptionState(key)){
-      const answer = await msgHandler.ask(`Value for ${key} is encrypted. Are you sure you want to decrypt? (Y/N) `);
-      if (answer === "Y" || answer === "y") {
+      const answer = await msgHandler.askHelper(`Value for ${key} is encrypted. Are you sure you want to decrypt? (Y/N) `);
+      if(answer){
         msgHandler.info("Actual Value:");
         const decryptedVal = caesarCipher(prevVal,7,true);
         prevVal = decryptedVal;
-      } else if (answer === "N" || answer === "n") {
-        msgHandler.info("Encrypted Value:");
-      } else {
-        msgHandler.error(`Invalid response, expected "Y" or "N". Received ${answer}`);
+      }
+      else{
         msgHandler.info("Encrypted Value:");
       }
-      
     }  
     msgHandler.success(prevVal);
   } else {
@@ -133,10 +130,16 @@ async function get([key]: string[]) {
   }
 }
 
-function remove([key]: string[]) {
+async function remove([key]: string[]) {
   if (quikVault.exists(key)) {
-    quikVault.del(key);
-    msgHandler.info(`${key} removed.`);
+    msgHandler.warn(`"del" will remove ${key} and it's value from quickvault`);
+    const answer = await msgHandler.askHelper("Do you wish to continue (Y/N) ? ");
+    if(answer){
+      quikVault.del(key);
+      msgHandler.info(`${key} removed.`);
+    }else{
+      msgHandler.info(`${key} deletion cancelled.`);
+    }
   } else {
     msgHandler.warn(`Unable to delete "${key}" - not found in quickvault`);
   }
@@ -170,18 +173,14 @@ function dump(vaultType:Store) {
 
 async function clear() {
   msgHandler.warn("`clear` will reset the quickvault");
-  const answer = await msgHandler.ask("Do you wish to continue (Y/N) ? ");
+  const answer = await msgHandler.askHelper("Do you wish to continue (Y/N) ? ");
 
-  if (answer === "Y" || answer === "y") {
+  if(answer){
     console.log();
     msgHandler.info(" Quickvault reset successful.");
     quikVault.clear();
-  } else if (answer === "N" || answer === "n") {
+  }else{
     msgHandler.info("Reset cancelled.");
-  } else {
-    msgHandler.error(
-      `Invalid response, expected "Y" or "N". Received ${answer}`
-    );
   }
 }
 
@@ -228,7 +227,6 @@ function generateEnv([path]:string[]){
         console.log(msgHandler.stuffColor(`Likely due to a permission error.Provide a different location!`,'cyan'));
       }
     }
-    
   }else{
     msgHandler.softError(`Invalid path: ${path}`);
   }
@@ -253,7 +251,6 @@ function generateBackup([path]:string[]){
         console.log(msgHandler.stuffColor(`Likely due to a permission error.Provide a different location!`,'cyan'));
       }
     }
-    
   }else{
     msgHandler.softError(`Invalid path: ${path}`);
   }
